@@ -6,6 +6,7 @@ import javax.json.JsonObject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
+import java.io.*;
 
 /**
  *
@@ -23,11 +24,25 @@ public class SecondServlet extends HttpServlet{
         Cookie ck = new Cookie("name",req.getRemoteHost().toString() );
         ck.setHttpOnly(true);
         ck.setMaxAge(6000);
-        
+        File newfile = new File("1.txt");
+        newfile.createNewFile();
+        System.out.println("New file has been created...");
         /**
          * Adding the cookie object inside the response...
          */
         res.addCookie(ck);
+        Cookie[] cook = req.getCookies();
+        String mycookie = "";
+        
+        // Parsing cookie
+        for(Cookie c:cook){
+            String name = c.getName();
+            if(name.equals("name")){
+                mycookie = c.getValue().toString();
+                break;
+            }
+        }
+        System.out.println(mycookie);
         RequestDispatcher rd = req.getRequestDispatcher("pages/Home.html");
         
         rd.forward(req, res);

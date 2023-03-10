@@ -18,6 +18,30 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div>Hello</div>
+        <form action="http://localhost:8080/my-web-app/FileServlet"  method="POST" id="form">
+            <input type="text" name="desc" id="desc"/>
+            <input type="submit" value="Submit" name="Submit" id="btn"/>
+        </form>
+        
+        <script>
+            const btn = document.getElementById("btn");
+            const desc = document.getElementById("desc");
+            const form = document.getElementById("form");
+            
+            btn.addEventListener("click",async (e)=>{
+                e.preventDefault();
+                const newform = new FormData(form);
+                const res = await fetch("http://localhost:8080/my-web-app/FileServlet",{
+                    method:"POST",
+                    headers:{
+                      'content-type':'application/x-www-form-urlencoded'  
+                    },
+                    body:`desc=${desc.value}`
+                })
+                
+                const data = await res.json();
+                console.log(data)
+            })
+        </script>
     </body>
 </html>
